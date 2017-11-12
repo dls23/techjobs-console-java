@@ -1,5 +1,6 @@
 package org.launchcode.techjobs.console;
 
+import com.sun.deploy.util.StringUtils;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -76,8 +77,36 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            String lcAValue = aValue.toLowerCase();
+            String lcValue = value.toLowerCase();
+
+            if (lcAValue.contains(lcValue)) {
                 jobs.add(row);
+            }
+        }
+
+        return jobs;
+    }
+
+     public static ArrayList<HashMap<String, String>> findByValue(String value){
+
+        // load data, if not already loaded
+        loadData();
+
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+        //For each job listing
+        for (int i = 0; i < allJobs.size(); i++) {
+            //For each field in the job
+            for (String key : allJobs.get(i).keySet()){
+                String aValue = allJobs.get(i).get(key);
+
+                String lcAValue = aValue.toLowerCase();
+                String lcValue = value.toLowerCase();
+
+                if (lcAValue.contains(lcValue)) {
+                        jobs.add(allJobs.get(i));
+                        break;
+                    }
             }
         }
 
